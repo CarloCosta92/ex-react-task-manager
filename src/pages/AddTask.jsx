@@ -1,4 +1,5 @@
 import { useRef, useState } from "react"
+import useTasks from "../hook/useTasks"
 
 export default function AddTask() {
     const [title, setTitle] = useState("")
@@ -7,7 +8,9 @@ export default function AddTask() {
     const statusRef = useRef("")
     const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
 
-    const handleSubmit = (e) => {
+    const { addTask } = useTasks();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validazione titolo
@@ -31,7 +34,17 @@ export default function AddTask() {
             status: statusRef.current.value,
         };
 
-        console.log("Nuovo task:", task);
+        try {
+            await addTask(task);
+            alert("Task aggiunta con successo!");
+
+            // Reset dei campi
+            setTitle("");
+            descriptionRef.current.value = "";
+            statusRef.current.value = "";
+        } catch (err) {
+            alert("Errore: " + err.message);
+        }
 
         // Reset
         setTitle("");
@@ -64,10 +77,11 @@ export default function AddTask() {
                     <label htmlFor="stato" className="form-label">Stato</label>
                     <select className="form-select"
                         ref={statusRef}>
-                        <option>Seleziona lo stato</option>
-                        <option>To Do</option>
-                        <option>Doing</option>
-                        <option>Done</option>
+                        <option value="">Seleziona lo stato</option>
+                        <option value="To Do">To Do</option>
+                        <option value="Doing">Doing</option>
+                        <option value="Done">Done</option>
+
                     </select>
                 </div>
                 <button type="submit" className="btn btn-primary">Aggiungi Task</button>

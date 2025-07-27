@@ -15,8 +15,30 @@ function useTasks() {
             .catch((error) => console.error("Errore nel fetch:", error));
     }, [endpointAPI]);
 
-    const addTask = () => {
-        console.log(addTask)
+    const addTask = async ({ title, description, status }) => {
+        try {
+            const response = await fetch(endpointAPI,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/JSON",
+                    },
+                    body: JSON.stringify({ title, description, status })
+                }
+            )
+
+            const result = await response.json()
+
+            if (result.success) {
+                setTasks((esistenti) => [...esistenti, result.task])
+            } else {
+                throw new Error(result.message)
+            }
+        }
+        catch (error) {
+            throw new Error(error.message)
+        }
+
     }
 
     const removeTask = () => {
