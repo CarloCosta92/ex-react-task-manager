@@ -18,7 +18,7 @@ function TaskRow({ item }) {
                 <NavLink to={`/task/${item.id}`}>{item.title}</NavLink>
             </td>
             <td className={status}>{item.status}</td>
-            <td>{item.createdAt}</td>
+            <td>{new Date(item.createdAt).toLocaleDateString()}</td>
         </tr>
     )
 }
