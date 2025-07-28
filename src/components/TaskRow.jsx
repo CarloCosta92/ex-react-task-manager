@@ -1,4 +1,5 @@
 import React from "react"
+import { NavLink } from "react-router-dom"
 
 function TaskRow({ item }) {
     let status = ""
@@ -13,7 +14,9 @@ function TaskRow({ item }) {
 
     return (
         <tr>
-            <td>{item.title}</td>
+            <td>
+                <NavLink to={`/task/${item.id}`}>{item.title}</NavLink>
+            </td>
             <td className={status}>{item.status}</td>
             <td>{item.createdAt}</td>
         </tr>
